@@ -39,7 +39,7 @@ if __name__ == '__main__':
         intersections.append(intersection)
 
 #    mytest(10,10, intersections,1,41000)
-    testRange = (1, 3)
+    testRange = (1, 15)
     stepLength = 1
     for idx in range(len(intersections)):
         pool = multiprocessing.Pool(processes = CoreNumber,
