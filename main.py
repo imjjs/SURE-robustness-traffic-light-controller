@@ -9,15 +9,44 @@ import test
 import time
 
 
+import socket
+def get_open_port(howMany=1):
+    """Return a list of n free port numbers on localhost"""
+    results = []
+    sockets = []
+    for x in range(howMany):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(('localhost', 0))
+        # work out what the actual port number it's bound to is
+        addr, port = s.getsockname()
+        results.append(port)
+        sockets.append(s)
+
+    for s in sockets:
+        s.close()
+
+    return results
+
+port_que = Queue.Queue()
+
+def generator_ports():
+    ports = get_open_port(84)
+    print ports
+    for i in ports:
+        port_que.put_nowait(i)
+
+
 
 PORT = 41000
 
-CoreNumber = multiprocessing.cpu_count()
+CoreNumber = 4
+    #multiprocessing.cpu_count()
 
-que = Queue.Queue()
+testRange = (1, 20)
+stepLength = 2
 
 def mytestWarp(tup):
-    return test.mytest(tup[0], tup[1], tup[2], tup[3], tup[4])
+    return test.mytest(tup[0], tup[1], tup[2], tup[3], tup[4], tup[5])
 
 
 
@@ -29,6 +58,7 @@ def start_process():
 if __name__ == '__main__':
     jobs = []
 
+
     intersections = []
     for ele in config.IntersectionList:
         intersection = Intersection(ele)
@@ -36,17 +66,20 @@ if __name__ == '__main__':
         intersections.append(intersection)
 
 #    mytest(10,10, intersections,1,41000)
-    testRange = (1, 20)
-    stepLength = 2
+
     for idx in range(len(intersections)):
         pool = multiprocessing.Pool(processes = CoreNumber,
                                 initializer = start_process)
+        ports = get_open_port(((testRange[1] - testRange[0] + 1)/stepLength)**2 + 10)
+
         inputList = []
-        procID = PORT
+       # procID = PORT
+        t = 0
         for i in range(testRange[0], testRange[1], stepLength):
             for j in range(testRange[0], testRange[1], stepLength):
-                inputList.append((i, j, intersections, idx, procID))
-                procID += 1
+                inputList.append((i, j, intersections, idx, ports[t], ports[t]))
+                #procID += 1
+                t += 1
 
         result = pool.map(mytestWarp, inputList)
         pool.close()
@@ -62,4 +95,4 @@ lambda x: x[0])
         intersections[idx].setThreshold(minWeThreshold, minNsThreshold)
         f.flush()
         time.sleep(30)
-        print "sleeping--------"
+        print "sleeping at loot--------"

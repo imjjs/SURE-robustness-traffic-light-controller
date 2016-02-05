@@ -10,22 +10,15 @@ try:
 except ImportError:
     import xml.etree.ElementTree as ET
 
-import socket
-def get_open_port():
+import main
+import time
 
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(("",0))
-        s.listen(1)
-        port = s.getsockname()[1]
-        s.close()
-        return port
 
 
 def mytest(weThreshold, nsThreshold,
            intersections,
-           intersectionIndex, procID):
+           intersectionIndex, procID, port):
 
-    port = get_open_port()
 
     sumoProcess = subprocess.Popen(
         ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(procID) + ".xml",
@@ -60,10 +53,14 @@ def mytest(weThreshold, nsThreshold,
 
     xmlfile.close()
     os.remove("tripinfo" + str(procID) + ".xml")
+
+    time.sleep(30)
+    print "sleeping at test--------"
     return avgspeed , weThreshold, nsThreshold
     
 if __name__ == '__main__':
     intersections = []
+    main.generator_ports()
     for ele in config.IntersectionList:
         intersection = Intersection(ele)
         intersection.loadFromData(config.IN_DATA)
