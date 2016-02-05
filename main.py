@@ -39,7 +39,7 @@ if __name__ == '__main__':
         intersections.append(intersection)
 
 #    mytest(10,10, intersections,1,41000)
-    testRange = (1, 3)
+    testRange = (1, 10)
     stepLength = 1
     for idx in range(len(intersections)):
         pool = multiprocessing.Pool(processes = CoreNumber,
@@ -72,8 +72,5 @@ if __name__ == '__main__':
             f.write(str(i[0]) + '\n')
         maxSpeed, minWeThreshold, minNsThreshold = max(avgspeedL, key = 
 lambda x: x[0])
-        print minWeThreshold, minNsThreshold
-        out = 'final' + str(maxSpeed) + str(minWeThreshold) + str(minNsThreshold)
-        print out
-        f.write("final:"+ str(maxSpeed) + str(minWeThreshold) + str(minNsThreshold))
+        f.write("final:"+ str(maxSpeed) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
         intersections[idx].setThreshold(minWeThreshold, minNsThreshold)
