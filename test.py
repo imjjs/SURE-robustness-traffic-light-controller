@@ -9,10 +9,10 @@ def mytest(weThreshold, nsThreshold,
            intersectionIndex, port):
 
     sumoProcess = subprocess.Popen(
-        ["/opt/local/bin/sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port)+ ".xml",
+        ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port)+ ".xml",
          "--remote-port", str(port)], stdout= config.DEVNULL, stderr= config.DEVNULL)
     traci.init(port)
-    print "sumostart"
+
     ins = intersections[intersectionIndex]
     ins.setThreshold(weThreshold, nsThreshold)
 
@@ -27,7 +27,7 @@ def mytest(weThreshold, nsThreshold,
 
     traci.close()
     sumoProcess.wait()
-    print "sumoclose"
+
     #time2 = time.time()
     # print "weThreshold ={we}, nsThreshold = {ns}, avgLatency = {avg}".format(we = weThreshold, ns = nsThreshold, avg = avgLatency)
     return "tripinfo" + str(port) + ".xml", weThreshold, nsThreshold

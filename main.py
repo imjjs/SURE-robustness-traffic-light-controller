@@ -39,7 +39,7 @@ if __name__ == '__main__':
         intersections.append(intersection)
 
 #    mytest(10,10, intersections,1,41000)
-    testRange = (1, 15)
+    testRange = (1, 3)
     stepLength = 1
     for idx in range(len(intersections)):
         pool = multiprocessing.Pool(processes = CoreNumber,
@@ -54,7 +54,6 @@ if __name__ == '__main__':
         result = pool.map(mytestWarp, inputList)
         pool.close()
         pool.join()
-        print result
         
         avgspeedL = []
         for ele in result:
@@ -63,15 +62,18 @@ if __name__ == '__main__':
             totalSpeed = 0
             carNumber = len(treeRoot)
             for child in treeRoot:
-		print "speed:", float(child.attrib['routeLength'])/ float(child.attrib['duration'])
-                totalSpeed += float(child.attrib['routeLength'])/ float(child.attrib['duration'])
+                totalSpeed += float(child.attrib['routeLength'])/float(child.attrib['duration'])
             avgspeed = totalSpeed * 1.0 / carNumber
             avgspeedL.append((avgspeed, ele[1],ele[2],))
-        print avgspeedL    
-        
-
-        f = open("interection" + str(idx) + ".txt", "a")
-        print >>f, avgspeedL
-        maxSpeed, minWeThreshold, minNsThreshold = max(avgspeedL, lambda x: x[0])
-        print >>f, "final:", maxSpeed, minWeThreshold, minNsThreshold
+       
+        f = open("intersection" + str(idx) + ".txt", "a")
+        for i in avgspeedL:
+            print i[0]
+            f.write(str(i[0]) + '\n')
+        maxSpeed, minWeThreshold, minNsThreshold = max(avgspeedL, key = 
+lambda x: x[0])
+        print minWeThreshold, minNsThreshold
+        out = 'final' + str(maxSpeed) + str(minWeThreshold) + str(minNsThreshold)
+        print out
+        f.write("final:"+ str(maxSpeed) + str(minWeThreshold) + str(minNsThreshold))
         intersections[idx].setThreshold(minWeThreshold, minNsThreshold)

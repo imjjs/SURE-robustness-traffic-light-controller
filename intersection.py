@@ -88,7 +88,7 @@ class Intersection(object):
         self.south.updateQueueLengthList()
         self.nsQueueLength = self.north.getQueueLength() + self.south.getQueueLength()
         self.weQueueLength = self.west.getQueueLength() + self.east.getQueueLength()
-        print self.weQueueLength, self.nsQueueLength
+#        print self.weQueueLength, self.nsQueueLength
 
 
     def updateClock(self):
