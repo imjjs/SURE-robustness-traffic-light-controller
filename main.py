@@ -6,10 +6,7 @@ import Queue
 from intersection import Intersection
 import config
 import test
-try:
-    import xml.etree.cElementTree as ET
-except ImportError:
-    import xml.etree.ElementTree as ET
+
 
 
 
@@ -54,23 +51,12 @@ if __name__ == '__main__':
         result = pool.map(mytestWarp, inputList)
         pool.close()
         pool.join()
-        
-        avgspeedL = []
-        for ele in result:
-            xmlTree = ET.ElementTree(file = ele[0])
-            treeRoot = xmlTree.getroot()
-            totalSpeed = 0
-            carNumber = len(treeRoot)
-            for child in treeRoot:
-                totalSpeed += float(child.attrib['routeLength'])/float(child.attrib['duration'])
-            avgspeed = totalSpeed * 1.0 / carNumber
-            avgspeedL.append((avgspeed, ele[1],ele[2],))
-       
+
         f = open("intersection" + str(idx) + ".txt", "a")
-        for i in avgspeedL:
+        for i in result:
             print i[0]
             f.write(str(i[0]) + '\n')
-        maxSpeed, minWeThreshold, minNsThreshold = max(avgspeedL, key = 
+        maxSpeed, minWeThreshold, minNsThreshold = max(result, key =
 lambda x: x[0])
         f.write("final:"+ str(maxSpeed) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
         intersections[idx].setThreshold(minWeThreshold, minNsThreshold)

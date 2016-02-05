@@ -1,8 +1,12 @@
 import traci
 import subprocess
 import config
+import os
 from intersection import Intersection
-
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
 
 def mytest(weThreshold, nsThreshold,
            intersections,
@@ -27,10 +31,21 @@ def mytest(weThreshold, nsThreshold,
 
     traci.close()
     sumoProcess.wait()
-
+    sumoProcess.kill()
     #time2 = time.time()
-    # print "weThreshold ={we}, nsThreshold = {ns}, avgLatency = {avg}".format(we = weThreshold, ns = nsThreshold, avg = avgLatency)
-    return "tripinfo" + str(port) + ".xml", weThreshold, nsThreshold
+
+    xmlfile = open("tripinfo" + str(port) + ".xml", 'a')
+    xmlTree = ET.parse(xmlfile)
+    treeRoot = xmlTree.getroot()
+    totalSpeed = 0
+    carNumber = len(treeRoot)
+    for child in treeRoot:
+        totalSpeed += float(child.attrib['routeLength'])/float(child.attrib['duration'])
+    avgspeed = totalSpeed * 1.0 / carNumber
+
+    xmlfile.close()
+    os.remove("tripinfo" + str(port) + ".xml")
+    return avgspeed , weThreshold, nsThreshold
     
 if __name__ == '__main__':
     intersections = []
