@@ -36,17 +36,17 @@ if __name__ == '__main__':
         intersections.append(intersection)
 
 #    mytest(10,10, intersections,1,41000)
-    testRange = (1, 3)
-    stepLength = 1
+    testRange = (1, 20)
+    stepLength = 2
     for idx in range(len(intersections)):
         pool = multiprocessing.Pool(processes = CoreNumber,
                                 initializer = start_process)
         inputList = []
-        port = PORT
+        procID = PORT
         for i in range(testRange[0], testRange[1], stepLength):
             for j in range(testRange[0], testRange[1], stepLength):
-                inputList.append((i, j, intersections, idx, port))
-                port += 1
+                inputList.append((i, j, intersections, idx, procID))
+                procID += 1
 
         result = pool.map(mytestWarp, inputList)
         pool.close()
@@ -60,5 +60,6 @@ if __name__ == '__main__':
 lambda x: x[0])
         f.write("final:"+ str(maxSpeed) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
         intersections[idx].setThreshold(minWeThreshold, minNsThreshold)
+        f.flush()
         time.sleep(30)
         print "sleeping--------"

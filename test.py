@@ -10,12 +10,25 @@ try:
 except ImportError:
     import xml.etree.ElementTree as ET
 
+import socket
+def get_open_port():
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(("",0))
+        s.listen(1)
+        port = s.getsockname()[1]
+        s.close()
+        return port
+
+
 def mytest(weThreshold, nsThreshold,
            intersections,
-           intersectionIndex, port):
+           intersectionIndex, procID):
+
+    port = get_open_port()
 
     sumoProcess = subprocess.Popen(
-        ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port)+ ".xml",
+        ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(procID) + ".xml",
          "--remote-port", str(port)], stdout= config.DEVNULL, stderr= config.DEVNULL)
     traci.init(port)
 
@@ -36,7 +49,7 @@ def mytest(weThreshold, nsThreshold,
     sumoProcess.kill()
     #time2 = time.time()
 
-    xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
+    xmlfile = open("tripinfo" + str(procID) + ".xml", 'r')
     xmlTree = ET.parse(xmlfile)
     treeRoot = xmlTree.getroot()
     totalSpeed = 0
@@ -46,7 +59,7 @@ def mytest(weThreshold, nsThreshold,
     avgspeed = totalSpeed * 1.0 / carNumber
 
     xmlfile.close()
-    os.remove("tripinfo" + str(port) + ".xml")
+    os.remove("tripinfo" + str(procID) + ".xml")
     return avgspeed , weThreshold, nsThreshold
     
 if __name__ == '__main__':
