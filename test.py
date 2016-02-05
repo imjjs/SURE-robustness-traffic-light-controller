@@ -27,7 +27,7 @@ def mytest(weThreshold, nsThreshold,
 
     traci.close()
     sumoProcess.wait()
-
+    sumoProcess.kill()
     #time2 = time.time()
     # print "weThreshold ={we}, nsThreshold = {ns}, avgLatency = {avg}".format(we = weThreshold, ns = nsThreshold, avg = avgLatency)
     return "tripinfo" + str(port) + ".xml", weThreshold, nsThreshold
