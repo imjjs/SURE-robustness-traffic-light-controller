@@ -1,12 +1,12 @@
 import sys
-sys.path.append("/home/local/VANDERBILT/liy29/sumo-0.24.0/tools/")
+
 
 import multiprocessing
 import Queue
 from intersection import Intersection
 import config
 import test
-
+import time
 
 
 
@@ -36,7 +36,7 @@ if __name__ == '__main__':
         intersections.append(intersection)
 
 #    mytest(10,10, intersections,1,41000)
-    testRange = (1, 10)
+    testRange = (1, 3)
     stepLength = 1
     for idx in range(len(intersections)):
         pool = multiprocessing.Pool(processes = CoreNumber,
@@ -60,3 +60,5 @@ if __name__ == '__main__':
 lambda x: x[0])
         f.write("final:"+ str(maxSpeed) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
         intersections[idx].setThreshold(minWeThreshold, minNsThreshold)
+        time.sleep(30)
+        print "sleeping--------"

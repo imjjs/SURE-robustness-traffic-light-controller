@@ -1,3 +1,5 @@
+import sys
+sys.path.append("/home/local/VANDERBILT/liy29/sumo-0.24.0/tools/")
 import traci
 import subprocess
 import config
@@ -34,7 +36,7 @@ def mytest(weThreshold, nsThreshold,
     sumoProcess.kill()
     #time2 = time.time()
 
-    xmlfile = open("tripinfo" + str(port) + ".xml", 'a')
+    xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
     xmlTree = ET.parse(xmlfile)
     treeRoot = xmlTree.getroot()
     totalSpeed = 0
@@ -54,4 +56,4 @@ if __name__ == '__main__':
         intersection.loadFromData(config.IN_DATA)
         intersections.append(intersection)
         
-    mytest(30, 30, intersections, 0, 8431)
+    print mytest(2, 2, intersections, 0, 41003)
