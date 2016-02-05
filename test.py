@@ -22,7 +22,7 @@ def mytest(weThreshold, nsThreshold,
 
     sumoProcess = subprocess.Popen(
         ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(procID) + ".xml",
-         "--remote-port", str(port)], stdout= config.DEVNULL, stderr= config.DEVNULL)
+         "--remote-port", str(port)], stdout= config.DEVNULL)
     time.sleep(30)
     traci.init(port)
 
