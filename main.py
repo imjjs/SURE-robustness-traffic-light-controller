@@ -39,8 +39,7 @@ def generator_ports():
 
 PORT = 41000
 
-CoreNumber = 4
-    #multiprocessing.cpu_count()
+CoreNumber = multiprocessing.cpu_count()
 
 testRange = (1, 20)
 stepLength = 2
