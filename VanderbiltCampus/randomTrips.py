@@ -43,21 +43,21 @@ periods = [
     'intra': 75,
     'length': 20,
   },
-  { 'fromHome': 25, # midday
-    'toHome': 25,
-    'intra': 75,
-    'length': 20,
-  },
-  { 'fromHome': 25, # afternoon
-    'toHome': 125,
-    'intra': 75,
-    'length': 20,
-  },  
-  { 'fromHome': 25, # night
-    'toHome': 25,
-    'intra': 50,
-    'length': 60,
-  },
+  #{ 'fromHome': 25, # midday
+  #  'toHome': 25,
+  #  'intra': 75,
+  #  'length': 20,
+#  },
+#  { 'fromHome': 25, # afternoon
+ #   'toHome': 125,
+ #   'intra': 75,
+#    'length': 20,
+ # },  
+ # { 'fromHome': 25, # night
+#    'toHome': 25,
+#    'intra': 50,
+#    'length': 60,
+#  },
 ]
 
 flowID = 0
