@@ -18,11 +18,11 @@ import time
 def mytest(weThreshold, nsThreshold,
            intersections,
            intersectionIndex, procID, port):
-
+    errorF = open("errorf.txt", 'w')
 
     sumoProcess = subprocess.Popen(
         ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(procID) + ".xml",
-         "--remote-port", str(port)], stdout= config.DEVNULL, stderr = config.DEVNULL)
+         "--remote-port", str(port)], stdout= config.DEVNULL, stderr = errorF)
     time.sleep(30)
     traci.init(port)
 

@@ -84,7 +84,7 @@ if __name__ == '__main__':
         pool.close()
         pool.join()
 
-        f = open("intersection" + str(idx) + ".txt", "a")
+        f = open("intersection" + str(idx) + ".txt", "w")
         for i in result:
             print i[0]
             f.write(str(i[0]) + '\n')
