@@ -1,5 +1,3 @@
-import sys
-sys.path.append("/home/local/VANDERBILT/liy29/sumo-0.24.0/tools/")
 import traci
 
 
