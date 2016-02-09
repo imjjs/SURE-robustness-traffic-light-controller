@@ -40,7 +40,7 @@ def mytest(weThreshold, nsThreshold,
 
     traci.close()
     sumoProcess.wait()
-    sumoProcess.kill()
+    #sumoProcess.kill()
     #time2 = time.time()
 
     xmlfile = open("tripinfo" + str(procID) + ".xml", 'r')
