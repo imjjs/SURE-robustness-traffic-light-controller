@@ -14,14 +14,18 @@ def get_open_port(howMany=1):
     """Return a list of n free port numbers on localhost"""
     results = []
     sockets = []
-    for x in range(howMany):
+    i=0
+    while i < howMany:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind(('localhost', 0))
         # work out what the actual port number it's bound to is
         addr, port = s.getsockname()
+        if port < 40000:
+            s.close()
+            continue
         results.append(port)
         sockets.append(s)
-
+        i += 1
     for s in sockets:
         s.close()
 
