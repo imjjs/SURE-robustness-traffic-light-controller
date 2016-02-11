@@ -1,4 +1,37 @@
 import os
+from threading import Lock
+import socket
+
+PORT_LOCK = Lock()
+
+
+
+def get_open_port(howMany=1):
+    """Return a list of n free port numbers on localhost"""
+    results = []
+    sockets = []
+    i=0
+    while i < howMany:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(('localhost', 0))
+        # work out what the actual port number it's bound to is
+        addr, port = s.getsockname()
+        if port < 40000:
+            s.close()
+            continue
+        results.append(port)
+        sockets.append(s)
+        i += 1
+    for s in sockets:
+        s.close()
+
+    return results
+
+def generator_ports():
+    PORT_LOCK.acquire()
+    ports = get_open_port(1)
+    PORT_LOCK.release()
+    return ports[0]
 
 # NS_GREEN, WE_GREEN, w, e, n, s
 # WE_RED, NS_Red

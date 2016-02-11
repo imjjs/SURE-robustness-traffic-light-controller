@@ -17,12 +17,12 @@ import time
 
 def mytest(weThreshold, nsThreshold,
            intersections,
-           intersectionIndex, procID, port):
+           intersectionIndex):
     errorF = open("errorf.txt", 'w')
-
+    port = config.generator_ports()
     sumoProcess = subprocess.Popen(
-        ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(procID) + ".xml",
-         "--remote-port", str(port)], stdout= config.DEVNULL)
+        ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
+         "--remote-port", str(port)], stdout= config.DEVNULL, stderr = config.DEVNULL)
     time.sleep(30)
     traci.init(port)
 
@@ -43,7 +43,7 @@ def mytest(weThreshold, nsThreshold,
     #sumoProcess.kill()
     #time2 = time.time()
 
-    xmlfile = open("tripinfo" + str(procID) + ".xml", 'r')
+    xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
     xmlTree = ET.parse(xmlfile)
     treeRoot = xmlTree.getroot()
     totalSpeed = 0
@@ -53,7 +53,7 @@ def mytest(weThreshold, nsThreshold,
     avgspeed = totalSpeed * 1.0 / carNumber
 
     xmlfile.close()
-    os.remove("tripinfo" + str(procID) + ".xml")
+    os.remove("tripinfo" + str(port) + ".xml")
 
     time.sleep(30)
     print "sleeping at test--------"
@@ -61,10 +61,9 @@ def mytest(weThreshold, nsThreshold,
     
 if __name__ == '__main__':
     intersections = []
-    main.generator_ports()
     for ele in config.IntersectionList:
         intersection = Intersection(ele)
         intersection.loadFromData(config.IN_DATA)
         intersections.append(intersection)
         
-    print mytest(2, 2, intersections, 0, 41003)
+    print mytest(2, 2, intersections, 0)
