@@ -17,16 +17,19 @@ port_que = Queue.Queue()
 
 
 
-
+RUN_TIMES = 3
 PORT = 41000
 
 CoreNumber = multiprocessing.cpu_count()
 
-testRange = (1, 7)
+testRange = (1, 15)
 stepLength = 1
 
 def mytestWarp(tup):
-    return test.mytest(tup[0], tup[1], tup[2], tup[3])
+    sum = 0
+    for i in range(RUN_TIMES):
+        sum += test.mytest(tup[0], tup[1], tup[2], tup[3])
+    return sum/ RUN_TIMES
 
 
 
