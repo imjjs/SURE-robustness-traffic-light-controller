@@ -27,9 +27,12 @@ stepLength = 1
 
 def mytestWarp(tup):
     sum = 0
+    one = 0
+    two = 0
     for i in range(RUN_TIMES):
-        sum += test.mytest(tup[0], tup[1], tup[2], tup[3])
-    return sum/ RUN_TIMES
+        speed, we, ns = test.mytest(tup[0], tup[1], tup[2], tup[3])
+        sum += speed
+    return (sum/ RUN_TIMES, we, ns,)
 
 
 
