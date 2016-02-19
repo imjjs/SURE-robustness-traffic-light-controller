@@ -22,17 +22,13 @@ PORT = 41000
 
 CoreNumber = multiprocessing.cpu_count()
 
-testRange = (1, 15)
+testRange = (1, 10)
 stepLength = 1
 
 def mytestWarp(tup):
-    sum = 0
-    one = 0
-    two = 0
-    for i in range(RUN_TIMES):
-        speed, we, ns = test.mytest(tup[0], tup[1], tup[2], tup[3])
-        sum += speed
-    return (sum/ RUN_TIMES, we, ns,)
+
+    speed, we, ns = test.mytest(tup[0], tup[1], tup[2], tup[3])
+    return (speed, we, ns,)
 
 
 
@@ -57,6 +53,7 @@ if __name__ == '__main__':
         pool = multiprocessing.Pool(processes = CoreNumber,
                                 initializer = start_process)
         inputList = []
+        inputList.append((0, 0, intersections, idx,))
        # procID = PORT
         t = 0
         for i in range(testRange[0], testRange[1], stepLength):

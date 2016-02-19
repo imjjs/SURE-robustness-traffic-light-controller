@@ -136,9 +136,13 @@ class Intersection(object):
         self.updateClock()
 
     def run(self):
-        self.updateQueueLength()
-        self.controller()
-        self.updateClock()
+        if self.nsThreshold == 0 and self.weThreshold == 0:
+            self.defaultController()
+            self.updateClock()
+        else:
+            self.updateQueueLength()
+            self.controller()
+            self.updateClock()
 
 
 
