@@ -22,8 +22,8 @@ PORT = 41000
 
 CoreNumber = multiprocessing.cpu_count()
 
-testRange = (20, 60)
-stepLength = 5
+testRange = (1, 30)
+stepLength = 2
 
 def mytestWarp(tup):
 

@@ -25,7 +25,7 @@ def mytest(weThreshold, nsThreshold,
          "--remote-port", str(port)], stdout= config.DEVNULL, stderr = config.DEVNULL)
     time.sleep(10)
     traci.init(port)
-
+    print weThreshold, nsThreshold
     ins = intersections[intersectionIndex]
     ins.setThreshold(weThreshold, nsThreshold)
 
