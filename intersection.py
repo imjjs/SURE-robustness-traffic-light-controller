@@ -28,10 +28,11 @@ class Intersection(object):
     def __init__(self, name):
         self.name = name
         self.lightState = None
+        self.lightPrivState = None
 
         # Light
-        self.lightMax = 120
-        self.lightMin = 20
+        self.lightMax = 900
+        self.lightMin = 300
 
         # WE
         self.weClock = 0
@@ -94,46 +95,54 @@ class Intersection(object):
 
 
     def updateClock(self):
-        if self.getLightState() == self.nsGreens:
+        if self.lightState == self.nsGreens:
             self.nsClock += 1
             self.weClock = 0
-        elif self.getLightState() == self.weGreens:
+        elif self.lightState == self.weGreens:
             self.weClock += 1
             self.nsClock = 0
 
+    def init(self):
+        if self.lightState == None:
+            self.lightState = self.getLightState()
+        assert self.lightState == self.nsGreens or self.lightState == self.weGreens
+
     def changeLight(self):
-        if self.getLightState() == self.nsGreens:
+        if self.lightState == self.nsGreens:
             self.setLightState(self.weGreens)
-        elif self.getLightState() == self.weGreens:
+            self.lightState = self.weGreens
+        elif self.lightState == self.weGreens:
             self.setLightState(self.nsGreens)
+            self.lightState = self.nsGreens
+
+    def keepLight(self):
+        self.setLightState(self.lightState)
 
     def controller(self):
-        if (self.weQueueLength < self.weThreshold and self.nsQueueLength < self.nsThreshold) or (
-                self.weQueueLength >= self.weThreshold and self.nsQueueLength >= self.nsThreshold):
-            if self.weClock > self.lightMax or self.nsClock > self.lightMax:
-                self.changeLight()
+        if ((self.weQueueLength < self.weThreshold and self.nsQueueLength < self.nsThreshold)\
+                or (self.weQueueLength >= self.weThreshold and self.nsQueueLength >= self.nsThreshold))\
+                and (self.weClock > self.lightMax or self.nsClock > self.lightMax):
+            self.changeLight()
 
-        elif self.weQueueLength >= self.weThreshold and self.nsQueueLength < self.nsThreshold:
-            if self.nsClock > self.lightMin:
-                self.changeLight()
-
-            elif self.weClock > self.lightMax:
-                self.changeLight()
+        elif (self.weQueueLength >= self.weThreshold and self.nsQueueLength < self.nsThreshold)\
+                and (self.nsClock > self.lightMin or self.weClock > self.lightMax):
+            self.changeLight()
  
-        elif self.nsQueueLength >= self.nsThreshold and self.weQueueLength < self.weThreshold:
-            if self.weClock > self.lightMin:
-                self.changeLight()
+        elif (self.nsQueueLength >= self.nsThreshold and self.weQueueLength < self.weThreshold)\
+                and (self.weClock > self.lightMin or self.nsClock > self.lightMax):
+            self.changeLight()
 
-            elif self.nsClock > self.lightMax:
-                self.changeLight()
-
+        else:
+            self.keepLight()
     def defaultController(self):
-        if self.weClock > 70 or self.nsClock > 70:
+        if self.weClock > 700 or self.nsClock > 700:
             self.changeLight()
 
     def defaultRun(self):
         self.defaultController()
         self.updateClock()
+        assert self.lightState == self.nsGreens or self.lightState == self.weGreens
+
 
     def run(self):
         if self.nsThreshold == 0 and self.weThreshold == 0:
@@ -144,6 +153,16 @@ class Intersection(object):
             self.controller()
             self.updateClock()
 
+        assert self.lightState == self.nsGreens or self.lightState == self.weGreens
+
+
+    def debug(self):
+        print "ns:", self.nsQueueLength, '(', self.nsThreshold, ')'
+        print self.north.lanesLengthList
+        print "we:", self.weQueueLength, '(', self.weThreshold, ')'
+        print self.south.lanesLengthList
+        print "ns.clock:", self.nsClock
+        print "we.clock:", self.weClock
 
 
 

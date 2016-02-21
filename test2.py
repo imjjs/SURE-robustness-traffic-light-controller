@@ -47,7 +47,7 @@ CONFIGURE = []
 
 
 def mytestWarp(tup):
-    return test.mytest(tup[0], tup[1], tup[2], tup[3], tup[4], tup[5])
+    return test.mytest(tup[0], tup[1], tup[2], tup[3])
 
 
 

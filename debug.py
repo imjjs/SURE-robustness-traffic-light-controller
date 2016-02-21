@@ -15,30 +15,22 @@ import time
 
 
 
-def mytest(weThreshold, nsThreshold,
-           intersections,
-           intersectionIndex):
+def mytest(intersections):
     errorF = open("errorf.txt", 'w')
     port = config.generator_ports()
     sumoProcess = subprocess.Popen(
-        ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
+        ["sumo-gui", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
          "--remote-port", str(port)], stdout= config.DEVNULL, stderr = config.DEVNULL)
-    time.sleep(10)
+    time.sleep(30)
     traci.init(port)
-
-    ins = intersections[intersectionIndex]
-    ins.setThreshold(weThreshold, nsThreshold)
-
-    for ele in intersections:
-        ele.init()
 
     #time1 = time.time()
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
-        for ele in intersections[0:intersectionIndex + 1]:
-            ele.run()
-        for ele in intersections[intersectionIndex + 1:]:
-            ele.defaultRun()
+        print intersections[1].name
+        intersections[1].run()
+        #for ele in intersections:
+        #    ele.run()
 
     traci.close()
     sumoProcess.wait()
@@ -57,15 +49,19 @@ def mytest(weThreshold, nsThreshold,
     xmlfile.close()
     os.remove("tripinfo" + str(port) + ".xml")
 
-    time.sleep(10)
+    time.sleep(30)
     print "sleeping at test--------"
-    return avgspeed , weThreshold, nsThreshold
-    
+    return avgspeed
+
 if __name__ == '__main__':
     intersections = []
+    CONFIG = [(1,2),(3,2),(2,1),(1,4), (1,2), (1,2), (1,5), (3,2), (3,3)]
     for ele in config.IntersectionList:
         intersection = Intersection(ele)
         intersection.loadFromData(config.IN_DATA)
         intersections.append(intersection)
-        
-    print mytest(2, 2, intersections, 0)
+
+    for idx in range(len(intersections)):
+        intersections[idx].setThreshold(CONFIG[idx][0], CONFIG[idx][1])
+
+    print mytest(intersections)

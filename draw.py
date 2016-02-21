@@ -36,6 +36,7 @@ if __name__ == '__main__':
 
     plt.plot([0, intersection_num], [BaseLine, BaseLine], '-')
     plt.plot([0, intersection_num], [maximum, maximum], '-')
+    plt.ylim([8,14])
     #plt.plot([0, 10.98], [5, 10.98], 'k-', lw=1)
     plt.plot(x, y)
     plt.savefig("1_7_1_10.png")

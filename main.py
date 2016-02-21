@@ -17,13 +17,13 @@ port_que = Queue.Queue()
 
 
 
-RUN_TIMES = 3
+
 PORT = 41000
 
 CoreNumber = multiprocessing.cpu_count()
 
-testRange = (1, 10)
-stepLength = 1
+testRange = (20, 60)
+stepLength = 5
 
 def mytestWarp(tup):
 
@@ -75,5 +75,5 @@ lambda x: x[0])
         f.write("final:"+ str(maxSpeed) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
         intersections[idx].setThreshold(minWeThreshold, minNsThreshold)
         f.flush()
-        time.sleep(30)
+        time.sleep(10)
         print "sleeping at loot--------"
