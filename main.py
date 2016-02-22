@@ -22,8 +22,8 @@ PORT = 41000
 
 CoreNumber = multiprocessing.cpu_count()
 
-testRange = (1, 30)
-stepLength = 2
+testRange = (1, 15)
+stepLength = 1
 
 def mytestWarp(tup):
 
@@ -45,6 +45,7 @@ if __name__ == '__main__':
     for ele in config.IntersectionList:
         intersection = Intersection(ele)
         intersection.loadFromData(config.IN_DATA)
+        intersection.setThreshold(0, 0)
         intersections.append(intersection)
 
 #    mytest(10,10, intersections,1,41000)
@@ -70,9 +71,15 @@ if __name__ == '__main__':
         for i in result:
             print i[0]
             f.write(str(i[0]) + '\n')
-        maxSpeed, minWeThreshold, minNsThreshold = max(result, key =
-lambda x: x[0])
-        f.write("final:"+ str(maxSpeed) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
+
+
+
+        #maxSpeed, minWeThreshold, minNsThreshold = max(result, key = lambda x: x[0])
+        #f.write("final:"+ str(maxSpeed) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
+
+        minDuration, minWeThreshold, minNsThreshold = min(result, key = lambda x: x[0])
+        f.write("final:"+ str(minDuration) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
+
         intersections[idx].setThreshold(minWeThreshold, minNsThreshold)
         f.flush()
         time.sleep(10)

@@ -35,16 +35,38 @@ def mytest(weThreshold, nsThreshold,
     #time1 = time.time()
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulationStep()
-        for ele in intersections[0:intersectionIndex + 1]:
+        for ele in intersections:
             ele.run()
-        for ele in intersections[intersectionIndex + 1:]:
-            ele.defaultRun()
+#        for ele in intersections[intersectionIndex + 1:]:
+#            ele.defaultRun()
 
     traci.close()
     sumoProcess.wait()
-    #sumoProcess.kill()
-    #time2 = time.time()
 
+    #avgspeed = avgSpeed(port)
+
+    #time.sleep(10)
+    #print "sleeping at test--------"
+    #return avgspeed , weThreshold, nsThreshold
+    return avgDruation(port), weThreshold, nsThreshold
+
+def avgDruation(port):
+    xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
+    xmlTree = ET.parse(xmlfile)
+    treeRoot = xmlTree.getroot()
+    totalDuration = 0
+    carNumber = len(treeRoot)
+    for child in treeRoot:
+        totalDuration += float(child.attrib['duration'])
+    avgDuration = totalDuration * 1.0 / carNumber
+
+    xmlfile.close()
+    os.remove("tripinfo" + str(port) + ".xml")
+
+    return avgDuration
+
+
+def avgSpeed(port):
     xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
     xmlTree = ET.parse(xmlfile)
     treeRoot = xmlTree.getroot()
@@ -57,10 +79,8 @@ def mytest(weThreshold, nsThreshold,
     xmlfile.close()
     os.remove("tripinfo" + str(port) + ".xml")
 
-    time.sleep(10)
-    print "sleeping at test--------"
-    return avgspeed , weThreshold, nsThreshold
-    
+    return avgspeed
+
 if __name__ == '__main__':
     intersections = []
     for ele in config.IntersectionList:
