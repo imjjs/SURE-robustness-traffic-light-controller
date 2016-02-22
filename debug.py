@@ -4,6 +4,7 @@ import traci
 import subprocess
 import config
 import os
+import test
 from intersection import Intersection
 try:
     import xml.etree.cElementTree as ET
@@ -19,7 +20,7 @@ def mytest(intersections):
     errorF = open("errorf.txt", 'w')
     port = config.generator_ports()
     sumoProcess = subprocess.Popen(
-        ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
+        ["sumo-gui", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
          "--remote-port", str(port)], stdout= config.DEVNULL, stderr = config.DEVNULL)
     #time.sleep(30)
     traci.init(port)
@@ -39,26 +40,11 @@ def mytest(intersections):
     sumoProcess.wait()
     #sumoProcess.kill()
     #time2 = time.time()
-
-    xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
-    xmlTree = ET.parse(xmlfile)
-    treeRoot = xmlTree.getroot()
-    totalSpeed = 0
-    carNumber = len(treeRoot)
-    for child in treeRoot:
-        totalSpeed += float(child.attrib['routeLength'])/float(child.attrib['duration'])
-    avgspeed = totalSpeed * 1.0 / carNumber
-
-    xmlfile.close()
-    os.remove("tripinfo" + str(port) + ".xml")
-
-    #time.sleep(30)
-    print "sleeping at test--------"
-    return avgspeed
+    return test.avgDuration(port)
 
 if __name__ == '__main__':
     intersections = []
-    CONFIG = [(5,1),(1,3),(11,3),(5,5), (9,15), (0,0), (1,5), (11,11), (0,0)]
+    CONFIG = [(2,2),(2,6),(0,0),(0,0), (0,0), (0,0), (0,0), (0,0), (0,0)]
     for ele in config.IntersectionList:
         intersection = Intersection(ele)
         intersection.loadFromData(config.IN_DATA)

@@ -74,11 +74,11 @@ if __name__ == '__main__':
 
 
 
-        #maxSpeed, minWeThreshold, minNsThreshold = max(result, key = lambda x: x[0])
-        #f.write("final:"+ str(maxSpeed) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
+        maxSpeed, minWeThreshold, minNsThreshold = max(result, key = lambda x: x[0])
+        f.write("final:"+ str(maxSpeed) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
 
-        minDuration, minWeThreshold, minNsThreshold = min(result, key = lambda x: x[0])
-        f.write("final:"+ str(minDuration) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
+        #minDuration, minWeThreshold, minNsThreshold = min(result, key = lambda x: x[0])
+        #f.write("final:"+ str(minDuration) + ',' + str(minWeThreshold) + ',' + str(minNsThreshold))
 
         intersections[idx].setThreshold(minWeThreshold, minNsThreshold)
         f.flush()

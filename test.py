@@ -43,14 +43,10 @@ def mytest(weThreshold, nsThreshold,
     traci.close()
     sumoProcess.wait()
 
-    #avgspeed = avgSpeed(port)
 
-    #time.sleep(10)
-    #print "sleeping at test--------"
-    #return avgspeed , weThreshold, nsThreshold
-    return avgDruation(port), weThreshold, nsThreshold
+    return avgSpeed(port), weThreshold, nsThreshold
 
-def avgDruation(port):
+def avgDuration(port):
     xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
     xmlTree = ET.parse(xmlfile)
     treeRoot = xmlTree.getroot()
@@ -58,12 +54,12 @@ def avgDruation(port):
     carNumber = len(treeRoot)
     for child in treeRoot:
         totalDuration += float(child.attrib['duration'])
-    avgDuration = totalDuration * 1.0 / carNumber
+    res = totalDuration * 1.0 / carNumber
 
     xmlfile.close()
     os.remove("tripinfo" + str(port) + ".xml")
 
-    return avgDuration
+    return res
 
 
 def avgSpeed(port):
