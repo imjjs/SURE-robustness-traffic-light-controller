@@ -134,6 +134,7 @@ class Intersection(object):
 
         else:
             self.keepLight()
+
     def defaultController(self):
         if self.weClock > 700 or self.nsClock > 700:
             self.changeLight()
@@ -143,6 +144,21 @@ class Intersection(object):
         self.updateClock()
         assert self.lightState == self.nsGreens or self.lightState == self.weGreens
 
+    def fixRunSetColck(self, clock1, clock2):
+        self.clock1 = clock1
+        self.clock2 = clock2
+        self.fixRun_mark = 1
+
+    def fixRun(self):
+        if 1 == self.fixRun_mark and (self.weClock > self.clock1 or self.nsClock > self.clock1):
+            self.changeLight()
+            self.fixRun_mark = 2
+        elif 2 == self.fixRun_mark and (self.weClock > self.clock2 or self.nsClock > self.clock2):
+            self.changeLight()
+            self.fixRun_mark = 1
+        else:
+            self.keepLight()
+        self.updateClock()
 
     def run(self):
         if self.nsThreshold == 0 and self.weThreshold == 0:

@@ -42,11 +42,17 @@ if __name__ == '__main__':
 
 
     intersections = []
-    for ele in config.IntersectionList:
+    for ele in config.CompareList:
         intersection = Intersection(ele)
         intersection.loadFromData(config.IN_DATA)
         intersection.setThreshold(0, 0)
         intersections.append(intersection)
+    assert len(intersections) == 5
+
+    fix_config = [1500,1100,1100,700,1100]
+    for idx in range(len(intersections)):
+        intersections[idx].lightMax = max([fix_config[idx], 1800 - fix_config[idx]])
+        intersections[idx].lightMin = min([fix_config[idx], 1800 - fix_config[idx]])
 
 #    mytest(10,10, intersections,1,41000)
 
