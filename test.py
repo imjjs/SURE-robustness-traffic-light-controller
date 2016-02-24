@@ -21,7 +21,7 @@ def mytest(weThreshold, nsThreshold,
     #errorF = open("errorf.txt", 'w')
     port = config.generator_ports()
     sumoProcess = subprocess.Popen(
-        ["sumo", "-c", "Scenarios_2\dsc.sumocfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
+        ["sumo", "-c", "VanderbiltCampus\Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
          "--remote-port", str(port)], stdout= config.DEVNULL, stderr = config.DEVNULL)
 
     traci.init(port)
