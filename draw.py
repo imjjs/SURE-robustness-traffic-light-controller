@@ -9,9 +9,9 @@ def float_to_int(f):
         return int(f)
 
 
-intersection_num = 9
+intersection_num = 5
 Range = 14*14+1
-BaseLine = 10.521
+BaseLine = 0.8
 
 if __name__ == '__main__':
     count = 0.0
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     plt.plot([0, intersection_num], [BaseLine, BaseLine], '-')
     plt.plot([0, intersection_num], [maximum, maximum], '-')
-    plt.ylim([290,350])
+   # plt.ylim([290,350])
     #plt.plot([0, 10.98], [5, 10.98], 'k-', lw=1)
     plt.plot(x, y)
     plt.savefig("1_7_1_10.png")

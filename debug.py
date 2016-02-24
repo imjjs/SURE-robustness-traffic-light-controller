@@ -13,44 +13,22 @@ except ImportError:
 
 import main
 import time
-
-
-
-def mytest(intersections):
-    errorF = open("errorf.txt", 'w')
-    port = config.generator_ports()
-    sumoProcess = subprocess.Popen(
-        ["sumo-gui", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
-         "--remote-port", str(port)], stdout= config.DEVNULL, stderr = config.DEVNULL)
-    #time.sleep(30)
-    traci.init(port)
-
-    for ele in intersections:
-        ele.init()
-    #time1 = time.time()
-    while traci.simulation.getMinExpectedNumber() > 0:
-        traci.simulationStep()
-       # print intersections[1].name
-        for ele in intersections:
-            ele.run()
-        #for ele in intersections:
-        #    ele.run()
-
-    traci.close()
-    sumoProcess.wait()
-    #sumoProcess.kill()
-    #time2 = time.time()
-    return test.avgDuration(port)
+import test
 
 if __name__ == '__main__':
     intersections = []
-    CONFIG = [(2,2),(2,6),(0,0),(0,0), (0,0), (0,0), (0,0), (0,0), (0,0)]
-    for ele in config.IntersectionList:
+    CONFIG = [(1,1),(0,0),(0,0),(0,0), (0,0), (0,0), (0,0), (0,0), (0,0)]
+    for ele in config.smallMap:
         intersection = Intersection(ele)
         intersection.loadFromData(config.IN_DATA)
         intersections.append(intersection)
 
+    # fix_config = [1500,1100,1100,700,1100]
+    # for idx in range(len(intersections)):
+    #     intersections[idx].lightMax = max([fix_config[idx], 1800 - fix_config[idx]])
+    #     intersections[idx].lightMin = min([fix_config[idx], 1800 - fix_config[idx]])
+
     for idx in range(len(intersections)):
         intersections[idx].setThreshold(CONFIG[idx][0], CONFIG[idx][1])
 
-    print mytest(intersections)
+    print test.mytest(1,1,intersections,0)

@@ -1,6 +1,7 @@
 import os
 from threading import Lock
 import socket
+import intersection
 
 PORT_LOCK = Lock()
 
@@ -33,6 +34,19 @@ def generator_ports():
     PORT_LOCK.release()
     return ports[0]
 
+
+def generator_intersectionList(intersection_names, paraList):
+    ret = []
+    for name in intersection_names:
+        ins = intersection.Intersection(name)
+        ins.loadFromData(IN_DATA)
+        ret.append(ins)
+    assert len(ret) == len(paraList)
+
+    for idx in range(len(ret)):
+        ret[idx].setThreshold(paraList[idx][0], paraList[idx][1])
+    return ret
+
 # NS_GREEN, WE_GREEN, w, e, n, s
 # WE_RED, NS_Red
 IN_DATA = {
@@ -44,8 +58,15 @@ IN_DATA = {
     "202514078": ["GGGGggrrrrGGGGggrrrr", "rrrrrrGGggrrrrrrGGgg", 1, 2, 3, 3],#
     "3010263944": ["GGggrrrrrGGggrrrrr", "rrrrGGGggrrrrGGGgg", 2, 2, 2, 2],#
     "1443088096": ["GGGGggrrGGGGggrrrr", "GrrrrrGGrrrrrrGGgg", 1, 2, 3, 3],#
-    "202407913": ["GGGggGGGGgrrrr", "rrrrrrrrrrGGGG", 0, 2, 3, 3]#
+    "202407913": ["GGGggGGGGgrrrr", "rrrrrrrrrrGGGG", 0, 2, 3, 3],#
+    "IK" :["Grr", "rGG", 2, 0, 1, 0],
+    "LJ" :["Grr", "rGG", 2, 0, 1, 0],
+    "GD" :["Grr", "rGG", 2, 0, 1, 0],
+    "FH" :["Grr", "rGG", 2, 0, 1, 0],
+    "AC" :["GGrr", "rrGG", 2, 0, 2, 0],
 }
+
+smallMap = ['IK', 'LJ', 'GD', 'FH', 'AC']
 CompareList = ['1443088096','1443088101','202514078','3010263944','202407913']
 IntersectionList2 = ["202514063", "202305800", "202514074", "202514078", "3010263944", "1443088101", "202270699"]
 IntersectionList = ['1443088096', '1443088101', '202514078', '3010263944', '202407913', '202514074', '202305800', '202514063', '202270699']

@@ -16,16 +16,16 @@ import time
 
 
 def mytest(weThreshold, nsThreshold,
-           intersections,
+           paraList, intersection_name,
            intersectionIndex):
-    errorF = open("errorf.txt", 'w')
+    #errorF = open("errorf.txt", 'w')
     port = config.generator_ports()
     sumoProcess = subprocess.Popen(
-        ["sumo", "-c", "VanderbiltCampus/Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
+        ["sumo", "-c", "Scenarios_2\dsc.sumocfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
          "--remote-port", str(port)], stdout= config.DEVNULL, stderr = config.DEVNULL)
-    time.sleep(10)
+
     traci.init(port)
-    print weThreshold, nsThreshold
+    intersections = config.generator_intersectionList(intersection_name, paraList)
     ins = intersections[intersectionIndex]
     ins.setThreshold(weThreshold, nsThreshold)
 
@@ -78,10 +78,6 @@ def avgSpeed(port):
     return avgspeed
 
 if __name__ == '__main__':
-    intersections = []
-    for ele in config.IntersectionList:
-        intersection = Intersection(ele)
-        intersection.loadFromData(config.IN_DATA)
-        intersections.append(intersection)
+    paraList = [(0,0), (0,0), (0,0), (0,0), (0,0)]
         
-    print mytest(2, 2, intersections, 0)
+    print mytest(1, 1, paraList, config.smallMap, 0)

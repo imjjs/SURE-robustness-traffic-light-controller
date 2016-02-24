@@ -33,6 +33,7 @@ class Intersection(object):
         # Light
         self.lightMax = 900
         self.lightMin = 300
+        self.defaultInterval = 900
 
         # WE
         self.weClock = 0
@@ -136,7 +137,7 @@ class Intersection(object):
             self.keepLight()
 
     def defaultController(self):
-        if self.weClock > 700 or self.nsClock > 700:
+        if self.weClock > 900 or self.nsClock > 900:
             self.changeLight()
 
     def defaultRun(self):
