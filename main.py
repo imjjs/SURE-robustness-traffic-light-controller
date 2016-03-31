@@ -16,7 +16,7 @@ port_que = Queue.Queue()
 
 
 
-INPUT_INTERSECTION = config.IntersectionList
+INPUT_INTERSECTION = config.smallMap
 
 PORT = 41000
 

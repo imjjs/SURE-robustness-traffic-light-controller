@@ -14,13 +14,16 @@ class Direction(object):
     def getQueueLength(self):
         if 0 == self.lanesNum:
             return 0
-        return max(self.lanesLengthList)
+        return self.lanesLengthList[0]
 
     def updateQueueLengthList(self):
-        sensorTemp = '{edge_name}{idx}'
-        for i in range(self.lanesNum):
-            sensor = sensorTemp.format(edge_name = self.name, idx = str(i))
-            self.lanesLengthList[i] = traci.areal.getLastStepVehicleNumber(sensor)
+        if 0 == self.lanesNum:
+            return
+        self.lanesLengthList[0] = traci.multientryexit.getLastStepVehicleNumber(self.name) * 1.0 / self.lanesNum
+        # sensorTemp = '{edge_name}{idx}'
+        # for i in range(self.lanesNum):
+        #     sensor = sensorTemp.format(edge_name = self.name, idx = str(i))
+        #     self.lanesLengthList[i] = traci.areal.getLastStepVehicleNumber(sensor)
 
 
 
@@ -31,7 +34,7 @@ class Intersection(object):
         self.lightPrivState = None
 
         # Light
-        self.lightMax = 900
+        self.lightMax = 1200
         self.lightMin = 300
         self.defaultInterval = 900
 
@@ -68,7 +71,7 @@ class Intersection(object):
         traci.trafficlights.setRedYellowGreenState(self.name, ltState)
 
     def setLines(self, west_lanes_num, east_lanes_num, north_lanes_num, south_lanes_num):
-        dString = "{name}S{direction}"
+        dString = "{name}{direction}"
         self.west  = Direction(dString.format(name = self.name, direction = 'W'), west_lanes_num)
         self.east  = Direction(dString.format(name = self.name, direction = 'E'), east_lanes_num)
         self.north = Direction(dString.format(name = self.name, direction = 'N'), north_lanes_num)
@@ -137,7 +140,7 @@ class Intersection(object):
             self.keepLight()
 
     def defaultController(self):
-        if self.weClock > 900 or self.nsClock > 900:
+        if self.weClock > self.defaultInterval or self.nsClock > self.defaultInterval:
             self.changeLight()
 
     def defaultRun(self):

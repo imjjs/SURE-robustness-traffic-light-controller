@@ -23,6 +23,7 @@ def mytest(weThreshold, nsThreshold,
     sumoProcess = subprocess.Popen(
         ["sumo", "-c", "VanderbiltCampus\Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
          "--remote-port", str(port)], stdout= config.DEVNULL, stderr = config.DEVNULL)
+    time.sleep(10)
 
     traci.init(port)
     intersections = config.generator_intersectionList(intersection_name, paraList)
@@ -42,7 +43,7 @@ def mytest(weThreshold, nsThreshold,
 
     traci.close()
     sumoProcess.wait()
-
+    time.sleep(10)
 
     return avgSpeed(port), weThreshold, nsThreshold
 
@@ -78,6 +79,6 @@ def avgSpeed(port):
     return avgspeed
 
 if __name__ == '__main__':
-    paraList = [(0,0), (0,0), (0,0), (0,0), (0,0)]
+    paraList = [(0,0), (0,0), (0,0), (0,0), (1,1)]
         
-    print mytest(1, 1, paraList, config.smallMap, 0)
+    print mytest(0, 0, paraList, config.CompareList, 0)

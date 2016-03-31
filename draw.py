@@ -15,11 +15,8 @@ BaseLine = 0.8
 
 if __name__ == '__main__':
     count = 0.0
-    xList = []
-    stepLength = 1.0/Range
-    for i in range(Range * intersection_num):
-        xList.append(count)
-        count += i*stepLength
+    x = np.arange(0, intersection_num, 1.0/ Range)
+    x = x[:-1]
     
     yList = []
     for i in range(intersection_num * Range):
@@ -32,11 +29,11 @@ if __name__ == '__main__':
         for i in range(idx*Range, (idx+1) *Range):
             #print i
             yList[i] = float(inputList[i - idx* Range])
+    print len(yList)
    
     maximum = max(yList)
     max_idx = yList.index(maximum)
     y = np.array(yList)
-    x = np.array(xList)
     plt.xlabel('inertsection, max = {peak}, {pct}%'.format(peak = maximum, pct = maximum/BaseLine*100))
     plt.ylabel('average speed(m/s)')
 
