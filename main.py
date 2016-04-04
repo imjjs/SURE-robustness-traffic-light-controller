@@ -26,7 +26,7 @@ testRange = (1, 25)
 stepLength = 1
 
 def mytestWarp(tup):
-    speed, we, ns = test.mytest(tup[0], tup[1], tup[2], tup[3], tup[4])
+    speed, we, ns = test.mytest(tup[0], tup[1], tup[2], tup[3], tup[4], tup[5])
     return (speed, we, ns,)
 
 
@@ -56,11 +56,11 @@ if __name__ == '__main__':
         pool = multiprocessing.Pool(processes = CoreNumber,
                                 initializer = start_process)
         inputList = []
-        inputList.append((0, 0, paraList, INPUT_INTERSECTION, idx,))
+        inputList.append((0, 0, paraList, INPUT_INTERSECTION, idx, config.sumoMaps))
 
         for i in range(testRange[0], testRange[1], stepLength):
             for j in range(testRange[0], testRange[1], stepLength):
-                inputList.append((i, j, paraList, INPUT_INTERSECTION, idx,))
+                inputList.append((i, j, paraList, INPUT_INTERSECTION, idx, config.sumoMaps))
                 #procID += 1
 
 
