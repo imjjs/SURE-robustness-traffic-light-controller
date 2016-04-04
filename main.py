@@ -20,7 +20,7 @@ INPUT_INTERSECTION = config.CompareList
 
 PORT = 41000
 
-CoreNumber = multiprocessing.cpu_count()
+CoreNumber = multiprocessing.cpu_count() * 2
 
 testRange = (1, 25)
 stepLength = 1
