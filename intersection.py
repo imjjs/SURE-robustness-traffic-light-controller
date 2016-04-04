@@ -20,6 +20,7 @@ class Direction(object):
         if 0 == self.lanesNum:
             return
         self.lanesLengthList[0] = traci.multientryexit.getLastStepVehicleNumber(self.name) * 1.0 / self.lanesNum
+
         # sensorTemp = '{edge_name}{idx}'
         # for i in range(self.lanesNum):
         #     sensor = sensorTemp.format(edge_name = self.name, idx = str(i))

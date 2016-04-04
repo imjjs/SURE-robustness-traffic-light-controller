@@ -14,14 +14,10 @@ import main
 import time
 
 
-
-def mytest(weThreshold, nsThreshold,
-           paraList, intersection_name,
-           intersectionIndex):
-    #errorF = open("errorf.txt", 'w')
+def simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, intersectionIndex, sumoMap):
     port = config.generator_ports()
     sumoProcess = subprocess.Popen(
-        ["sumo", "-c", "VanderbiltCampus\Vanderbilt.sumo.cfg", "--tripinfo-output", "tripinfo" + str(port) + ".xml",
+        ["sumo", "-c", sumoMap, "--tripinfo-output", "tripinfo" + str(port) + ".xml",
          "--remote-port", str(port)], stdout= config.DEVNULL, stderr = config.DEVNULL)
     time.sleep(10)
 
@@ -45,7 +41,21 @@ def mytest(weThreshold, nsThreshold,
     sumoProcess.wait()
     time.sleep(10)
 
-    return avgSpeed(port), weThreshold, nsThreshold
+    return avgSpeed(port)
+
+
+
+def mytest(weThreshold, nsThreshold,
+           paraList, intersection_name,
+           intersectionIndex, sumoMaps):
+    totalDistance = 0
+    totalDuration = 0
+    for map in sumoMaps:
+        distance, duration = simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, intersectionIndex, map)
+        totalDistance += distance
+        totalDuration += duration
+    return distance/duration, weThreshold, nsThreshold
+
 
 def avgDuration(port):
     xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
@@ -67,18 +77,20 @@ def avgSpeed(port):
     xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
     xmlTree = ET.parse(xmlfile)
     treeRoot = xmlTree.getroot()
-    totalSpeed = 0
+    totalDistance = 0
+    totalDuration = 0
     carNumber = len(treeRoot)
     for child in treeRoot:
-        totalSpeed += float(child.attrib['routeLength'])/float(child.attrib['duration'])
-    avgspeed = totalSpeed * 1.0 / carNumber
+        totalDistance += float(child.attrib['routeLength'])
+        totalDuration += float(child.attrib['duration'])
 
     xmlfile.close()
     os.remove("tripinfo" + str(port) + ".xml")
 
-    return avgspeed
+    print totalDistance, totalDuration
+    return totalDistance, totalDuration
 
 if __name__ == '__main__':
-    paraList = [(0,0), (0,0), (0,0), (0,0), (1,1)]
+    paraList = [(1,1), (1,1), (1,1), (1,1), (1,1)]
         
-    print mytest(0, 0, paraList, config.CompareList, 0)
+    print mytest(0, 0, paraList, config.CompareList, 0, config.sumoMaps)

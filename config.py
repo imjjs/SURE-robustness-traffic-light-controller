@@ -47,6 +47,20 @@ def generator_intersectionList(intersection_names, paraList):
         ret[idx].setThreshold(paraList[idx][0], paraList[idx][1])
     return ret
 
+sumoMaps = [
+    os.path.join('VanderbiltCampus','Vanderbilt.sumo (1).cfg'),
+    os.path.join('VanderbiltCampus','Vanderbilt.sumo (2).cfg'),
+    os.path.join('VanderbiltCampus','Vanderbilt.sumo (3).cfg'),
+    os.path.join('VanderbiltCampus','Vanderbilt.sumo (4).cfg'),
+    os.path.join('VanderbiltCampus','Vanderbilt.sumo (5).cfg'),
+    os.path.join('VanderbiltCampus','Vanderbilt.sumo (6).cfg'),
+    os.path.join('VanderbiltCampus','Vanderbilt.sumo (7).cfg'),
+    os.path.join('VanderbiltCampus','Vanderbilt.sumo (8).cfg'),
+ #   os.path.join('VanderbiltCampus','Vanderbilt.sumo (9).cfg'),
+ #   os.path.join('VanderbiltCampus','Vanderbilt.sumo (10).cfg'),
+]
+
+
 # NS_GREEN, WE_GREEN, w, e, n, s
 # WE_RED, NS_Red
 IN_DATA = {
