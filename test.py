@@ -51,7 +51,13 @@ def mytest(weThreshold, nsThreshold,
     totalDistance = 0
     totalDuration = 0
     for map in sumoMaps:
-        distance, duration = simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, intersectionIndex, map)
+        while True:
+            try:
+                distance, duration = simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, intersectionIndex, map)
+            except:
+                print 'error happen'
+                continue
+            break
         totalDistance += distance
         totalDuration += duration
     return distance/duration, weThreshold, nsThreshold

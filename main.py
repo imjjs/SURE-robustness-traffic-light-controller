@@ -18,11 +18,11 @@ port_que = Queue.Queue()
 
 INPUT_INTERSECTION = config.CompareList
 
-PORT = 41000
+
 
 CoreNumber = multiprocessing.cpu_count() * 2
 
-testRange = (1, 25)
+testRange = (1, 10)
 stepLength = 1
 
 def mytestWarp(tup):
