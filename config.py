@@ -3,16 +3,16 @@ from threading import Lock
 import socket
 import intersection
 import time
+import main
 
 PORT_LOCK = Lock()
 LOG_LOCK = Lock()
-Logfile = "8core.log"
-LogTime = time.time()
+
 def log(value):
     LOG_LOCK.acquire()
     t1 = time.time()
-    with open(Logfile,'a') as f:
-        f.write(str(t1 - LogTime) +' ' + str(value) + '\n')
+    with open(main.Logfile,'a') as f:
+        f.write(str(t1 - main.LogTime) +' ' + str(value) + '\n')
     LOG_LOCK.release()
 
 def get_open_port(howMany=1):

@@ -9,7 +9,8 @@ import test
 import time
 import socket
 
-
+Logfile = "8core.log"
+LogTime = time.time()
 
 port_que = Queue.Queue()
 
