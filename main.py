@@ -11,7 +11,6 @@ import socket
 
 
 
-
 port_que = Queue.Queue()
 
 
@@ -20,8 +19,9 @@ INPUT_INTERSECTION = config.CompareList
 
 
 
-CoreNumber = multiprocessing.cpu_count() * 2
+CoreNumber = 8
 
+TestPeriod = 25200
 testRange = (1, 10)
 stepLength = 1
 
@@ -38,8 +38,6 @@ def start_process():
 
 if __name__ == '__main__':
     jobs = []
-
-
     paraList = []
     for ele in INPUT_INTERSECTION:
         paraList.append((0,0,))
@@ -51,8 +49,11 @@ if __name__ == '__main__':
     #     intersections[idx].lightMin = min([fix_config[idx], 1800 - fix_config[idx]])
 
 #    mytest(10,10, intersections,1,41000)
-
-    for idx in range(len(paraList)):
+    idx = 0
+    #for idx in range(len(paraList)):
+    while True:
+        if time.time() - config.LogTime > TestPeriod:
+            break
         pool = multiprocessing.Pool(processes = CoreNumber,
                                 initializer = start_process)
         inputList = []
@@ -86,7 +87,9 @@ if __name__ == '__main__':
 
         paraList[idx] = (minWeThreshold, minNsThreshold,)
         f.flush()
+        idx = (idx + 1) % len(paraList)
         time.sleep(10)
+
         print "sleeping at loot--------"
 
     print paraList

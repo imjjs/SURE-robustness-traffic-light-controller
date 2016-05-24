@@ -41,7 +41,7 @@ def simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, int
     sumoProcess.wait()
     time.sleep(10)
 
-    return avgSpeed(port)
+    return durationAndDistance(port)
 
 
 
@@ -50,16 +50,19 @@ def mytest(weThreshold, nsThreshold,
            intersectionIndex, sumoMaps):
     totalDistance = 0
     totalDuration = 0
+
     for map in sumoMaps:
         while True:
+            distance,duration=0.0,0.0
             try:
                 distance, duration = simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, intersectionIndex, map)
-            except:
-                print 'error happen'
-                continue
+            except Exception , e:
+                print e
+                #continue
             break
         totalDistance += distance
         totalDuration += duration
+    config.log(distance/duration)
     return distance/duration, weThreshold, nsThreshold
 
 
@@ -78,25 +81,37 @@ def avgDuration(port):
 
     return res
 
+def durationAndDistance(port):
+    xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
+    xmlTree = ET.parse(xmlfile)
+    treeRoot = xmlTree.getroot()
+    totalDuration = 0
+    totalDistance = 0
+    carNumber = len(treeRoot)
+    for child in treeRoot:
+        totalDuration += float(child.attrib['duration'])
+        totalDistance += float(child.attrib['routeLength'])
+    xmlfile.close()
+    os.remove("tripinfo" + str(port) + ".xml")
+    return totalDistance, totalDuration
+
 
 def avgSpeed(port):
     xmlfile = open("tripinfo" + str(port) + ".xml", 'r')
     xmlTree = ET.parse(xmlfile)
     treeRoot = xmlTree.getroot()
-    totalDistance = 0
-    totalDuration = 0
+    totalSpeed = 0
     carNumber = len(treeRoot)
     for child in treeRoot:
-        totalDistance += float(child.attrib['routeLength'])
-        totalDuration += float(child.attrib['duration'])
+        totalSpeed += float(child.attrib['routeLength'])/float(child.attrib['duration'])
+    avgspeed = totalSpeed * 1.0 / carNumber
 
     xmlfile.close()
     os.remove("tripinfo" + str(port) + ".xml")
 
-    print totalDistance, totalDuration
-    return totalDistance, totalDuration
+    return avgspeed
 
 if __name__ == '__main__':
-    paraList = [(1,1), (1,1), (1,1), (1,1), (1,1)]
-        
-    print mytest(0, 0, paraList, config.CompareList, 0, config.sumoMaps)
+    config.LogTime = time.time()
+    paraList = [(0,0), (0,0), (0,0), (0,0), (0,0)]
+    print mytest(1, 1, paraList, config.CompareList, 0, config.sumoMaps)

@@ -2,10 +2,18 @@ import os
 from threading import Lock
 import socket
 import intersection
+import time
 
 PORT_LOCK = Lock()
-
-
+LOG_LOCK = Lock()
+Logfile = "8core.log"
+LogTime = time.time()
+def log(value):
+    LOG_LOCK.acquire()
+    t1 = time.time()
+    with open(Logfile,'a') as f:
+        f.write(str(t1 - LogTime) +' ' + str(value) + '\n')
+    LOG_LOCK.release()
 
 def get_open_port(howMany=1):
     """Return a list of n free port numbers on localhost"""
@@ -48,14 +56,15 @@ def generator_intersectionList(intersection_names, paraList):
     return ret
 
 sumoMaps = [
-    os.path.join('VanderbiltCampus','Vanderbilt.sumo (1).cfg'),
-    os.path.join('VanderbiltCampus','Vanderbilt.sumo (2).cfg'),
-    os.path.join('VanderbiltCampus','Vanderbilt.sumo (3).cfg'),
-    os.path.join('VanderbiltCampus','Vanderbilt.sumo (4).cfg'),
-    os.path.join('VanderbiltCampus','Vanderbilt.sumo (5).cfg'),
-    os.path.join('VanderbiltCampus','Vanderbilt.sumo (6).cfg'),
-    os.path.join('VanderbiltCampus','Vanderbilt.sumo (7).cfg'),
-    os.path.join('VanderbiltCampus','Vanderbilt.sumo (8).cfg'),
+    os.path.join('VanderbiltCampus','Vanderbilt.sumo.cfg')
+    # os.path.join('VanderbiltCampus','Vanderbilt.sumo (1).cfg'),
+    # os.path.join('VanderbiltCampus','Vanderbilt.sumo (2).cfg'),
+    # os.path.join('VanderbiltCampus','Vanderbilt.sumo (3).cfg'),
+    # os.path.join('VanderbiltCampus','Vanderbilt.sumo (4).cfg'),
+    # os.path.join('VanderbiltCampus','Vanderbilt.sumo (5).cfg'),
+    # os.path.join('VanderbiltCampus','Vanderbilt.sumo (6).cfg'),
+    # os.path.join('VanderbiltCampus','Vanderbilt.sumo (7).cfg'),
+    # os.path.join('VanderbiltCampus','Vanderbilt.sumo (8).cfg'),
  #   os.path.join('VanderbiltCampus','Vanderbilt.sumo (9).cfg'),
  #   os.path.join('VanderbiltCampus','Vanderbilt.sumo (10).cfg'),
 ]

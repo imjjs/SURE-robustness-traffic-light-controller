@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import time
+
 from random import seed, random, sample
 import xml.etree.ElementTree as ElementTree
 
@@ -19,7 +19,7 @@ toHome = [
   "-41139605#0",
 ]
 
-seed(time.time())
+seed(0)
 
 tree = ElementTree.parse("Vanderbilt.net.xml")
 root = tree.getroot()
@@ -54,10 +54,10 @@ periods = [
 #    'length': 20,
  # },  
  # { 'fromHome': 25, # night
- #   'toHome': 25,
- #   'intra': 50,
- #   'length': 60,
- # },
+#    'toHome': 25,
+#    'intra': 50,
+#    'length': 60,
+#  },
 ]
 
 flowID = 0
