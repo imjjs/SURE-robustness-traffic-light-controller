@@ -10,7 +10,7 @@ try:
 except ImportError:
     import xml.etree.ElementTree as ET
 
-import main
+import log
 import time
 
 
@@ -62,7 +62,7 @@ def mytest(weThreshold, nsThreshold,
             break
         totalDistance += distance
         totalDuration += duration
-    config.log(distance/duration)
+    log.log(distance/duration)
     return distance/duration, weThreshold, nsThreshold
 
 

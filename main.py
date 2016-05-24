@@ -8,9 +8,8 @@ import config
 import test
 import time
 import socket
+import log
 
-Logfile = "8core.log"
-LogTime = time.time()
 
 port_que = Queue.Queue()
 
@@ -38,6 +37,9 @@ def start_process():
     pass
 
 if __name__ == '__main__':
+    log.LogTime = time.time()
+    with open('logtime','w') as f:
+        f.write(str(log.LogTime))
     jobs = []
     paraList = []
     for ele in INPUT_INTERSECTION:
@@ -53,7 +55,7 @@ if __name__ == '__main__':
     idx = 0
     #for idx in range(len(paraList)):
     while True:
-        if time.time() - config.LogTime > TestPeriod:
+        if time.time() - log.LogTime > TestPeriod:
             break
         pool = multiprocessing.Pool(processes = CoreNumber,
                                 initializer = start_process)
