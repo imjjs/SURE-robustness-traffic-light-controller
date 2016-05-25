@@ -14,7 +14,7 @@ class Direction(object):
     def getQueueLength(self):
         if 0 == self.lanesNum:
             return 0
-        return float(sum(self.lanesLengthList))/len(self.lanesLengthList)
+        return sum(self.lanesLengthList) #*1.0/len(self.lanesLengthList)
 
     def updateQueueLengthList(self):
         sensorTemp = '{edge_name}{idx}'

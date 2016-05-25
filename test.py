@@ -58,7 +58,7 @@ def mytest(weThreshold, nsThreshold,
                 distance, duration = simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, intersectionIndex, map)
             except Exception , e:
                 print e
-                #continue
+                continue
             break
         totalDistance += distance
         totalDuration += duration
