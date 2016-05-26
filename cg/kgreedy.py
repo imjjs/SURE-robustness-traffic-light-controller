@@ -57,7 +57,7 @@ if __name__ == '__main__':
                 break
 
         for itID in KDict.keys():
-            PDict[itID] = subprocess.Popen(['python', 'dummy.py', '-c', str(cores), '-i', str(itID), '-p', outParaStr], stdout=KDict[itID])
+            PDict[itID] = subprocess.Popen(['python', 'main.py', '-c', str(cores), '-i', str(itID), '-p', outParaStr], stdout=KDict[itID])
         for itID in PDict.keys():
             PDict[itID].wait()
 
