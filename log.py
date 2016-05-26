@@ -1,6 +1,6 @@
 from threading import Lock
 import time
-Logfile = "32core.log.ran"
+Logfile = "16core.log.ran"
 LogTime = None
 
 LOG_LOCK = Lock()

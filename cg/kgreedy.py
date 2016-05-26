@@ -64,7 +64,7 @@ if __name__ == '__main__':
         RDict = {}
         for itID in KDict.keys():
             f = open('inter' + str(itID)+'.txt','r')
-            tmp = f.readline()[0:-1].split(',')
+            tmp = f.readlines()[-1][0:-1].split(',')
             RDict[itID] = (int(tmp[0]),int(tmp[1]))
 
 

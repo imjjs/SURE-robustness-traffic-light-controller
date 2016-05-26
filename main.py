@@ -19,7 +19,7 @@ INPUT_INTERSECTION = config.CompareList
 
 
 
-CoreNumber = 32
+CoreNumber = 16
 
 TestPeriod = 36000
 testRange = (2, 30)
