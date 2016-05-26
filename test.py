@@ -52,8 +52,8 @@ def mytest(weThreshold, nsThreshold,
     totalDuration = 0
 
     for map in sumoMaps:
+        distance,duration=0.0,0.0
         while True:
-            distance,duration=0.0,0.0
             try:
                 distance, duration = simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, intersectionIndex, map)
             except Exception , e:
@@ -62,8 +62,8 @@ def mytest(weThreshold, nsThreshold,
             break
         totalDistance += distance
         totalDuration += duration
-    log.log(distance/duration)
-    return distance/duration, weThreshold, nsThreshold
+    log.log(totalDistance/totalDuration)
+    return totalDistance/totalDuration, weThreshold, nsThreshold
 
 
 def avgDuration(port):
