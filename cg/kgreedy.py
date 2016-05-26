@@ -95,8 +95,7 @@ if __name__ == '__main__':
             if result[idx][0] > maxspeed:
                 maxidx = idx
                 maxspeed = result[idx][0]
-        print configurations
-        print result
+
         paraList = configurations[maxidx]
         if equal(priv_func, maxspeed):
             K = K/2

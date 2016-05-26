@@ -9,8 +9,8 @@ from optparse import OptionParser
 INPUT_INTERSECTION = config.CompareList
 
 
-testRange = (2, 4)
-stepLength = 1
+testRange = (2, 30)
+stepLength = 2
 
 
 def mytestWarp(tup):
