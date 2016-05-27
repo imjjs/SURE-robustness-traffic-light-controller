@@ -53,6 +53,7 @@ if __name__ == '__main__':
 
 #    mytest(10,10, intersections,1,41000)
     idx = random.randint(0,4)
+    priv_idx = -1
     #for idx in range(len(paraList)):
     while True:
 	print idx
@@ -91,7 +92,9 @@ if __name__ == '__main__':
 
         paraList[idx] = (minWeThreshold, minNsThreshold,)
         f.flush()
-        idx = random.randint(0,4)
+        priv_idx = idx
+        if idx == priv_idx:
+            idx = random.randint(0,4)
         time.sleep(10)
 
         print "sleeping at loot--------"
