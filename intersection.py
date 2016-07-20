@@ -1,5 +1,6 @@
 import sys
 sys.path.append("/home/local/VANDERBILT/liy29/sumo-0.24.0/tools/")
+sys.path.append("C:\\Program Files\ (x86)\\DLR\\Sumo\\tools\\traci")
 import traci
 
 
@@ -35,17 +36,18 @@ class Intersection(object):
         self.lightMin = 300
         self.defaultInterval = 900
 
+
+        self.threshold = 1
         # WE
         self.weClock = 0
         self.weQueueLength = 0
         self.weGreens = ""
-        self.weThreshold = 0
+
 
         # NS
         self.nsClock = 0
         self.nsQueueLength = 0
         self.nsGreens = ""
-        self.nsThreshold = 0
 
         # Directions
         self.north = None
@@ -74,9 +76,8 @@ class Intersection(object):
         self.north = Direction(dString.format(name = self.name, direction = 'N'), north_lanes_num)
         self.south = Direction(dString.format(name = self.name, direction = 'S'), south_lanes_num)
 
-    def setThreshold(self, we, ns):
-        self.weThreshold = we
-        self.nsThreshold = ns
+    def setThreshold(self, _threshold):
+        self.threshold = _threshold
 
     def loadFromData(self, dataDict):
 
@@ -116,25 +117,39 @@ class Intersection(object):
             self.setLightState(self.nsGreens)
             self.lightState = self.nsGreens
 
+    def setWE(self):
+        self.setLightState(self.weGreens)
+        self.lightState = self.weGreens
+
+    def setNS(self):
+        self.setLightState(self.nsGreens)
+        self.lightState = self.nsGreens
+
     def keepLight(self):
         self.setLightState(self.lightState)
 
     def controller(self):
-        if ((self.weQueueLength < self.weThreshold and self.nsQueueLength < self.nsThreshold)\
-                or (self.weQueueLength >= self.weThreshold and self.nsQueueLength >= self.nsThreshold))\
-                and (self.weClock > self.lightMax or self.nsClock > self.lightMax):
-            self.changeLight()
-
-        elif (self.weQueueLength >= self.weThreshold and self.nsQueueLength < self.nsThreshold)\
-                and (self.nsClock > self.lightMin or self.weClock > self.lightMax):
-            self.changeLight()
- 
-        elif (self.nsQueueLength >= self.nsThreshold and self.weQueueLength < self.weThreshold)\
-                and (self.weClock > self.lightMin or self.nsClock > self.lightMax):
-            self.changeLight()
-
-        else:
+        if self.weClock <= self.lightMin and self.nsClock <= self.lightMin:
             self.keepLight()
+        elif self.weClock > self.lightMax or self.nsClock > self.lightMax:
+            self.changeLight()
+
+        elif self.weClock > self.lightMin and self.weClock <= self.lightMax:
+            assert self.nsClock == 0
+            if self.nsQueueLength - self.weQueueLength > self.threshold:
+                self.changeLight()
+            else:
+                self.keepLight()
+
+        elif self.nsClock > self.lightMin and self.nsClock <= self.lightMax:
+            assert self.weClock == 0
+            if self.weQueueLength - self.nsQueueLength > self.threshold:
+                self.changeLight()
+            else:
+                self.keepLight()
+        else:
+            assert False #cannot reach here
+
 
     def defaultController(self):
         if self.weClock > self.defaultInterval or self.nsClock > self.defaultInterval:
@@ -162,24 +177,12 @@ class Intersection(object):
         self.updateClock()
 
     def run(self):
-        if self.nsThreshold == 0 and self.weThreshold == 0:
-            self.defaultController()
-            self.updateClock()
-        else:
-            self.updateQueueLength()
-            self.controller()
-            self.updateClock()
+
+        self.updateQueueLength()
+        self.controller()
+        self.updateClock()
 
         assert self.lightState == self.nsGreens or self.lightState == self.weGreens
-
-
-    def debug(self):
-        print "ns:", self.nsQueueLength, '(', self.nsThreshold, ')'
-        print self.north.lanesLengthList
-        print "we:", self.weQueueLength, '(', self.weThreshold, ')'
-        print self.south.lanesLengthList
-        print "ns.clock:", self.nsClock
-        print "we.clock:", self.weClock
 
 
 

@@ -1,5 +1,6 @@
 import sys
 sys.path.append("/home/local/VANDERBILT/liy29/sumo-0.24.0/tools/")
+
 import traci
 import subprocess
 import config
@@ -14,7 +15,7 @@ import log
 import time
 
 
-def simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, intersectionIndex, sumoMap):
+def simulationProcess(threshold, paraList, intersection_name, intersectionIndex, sumoMap):
     port = config.generator_ports()
     sumoProcess = subprocess.Popen(
         ["sumo", "-c", sumoMap, "--tripinfo-output", "tripinfo" + str(port) + ".xml",
@@ -24,7 +25,7 @@ def simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, int
     traci.init(port)
     intersections = config.generator_intersectionList(intersection_name, paraList)
     ins = intersections[intersectionIndex]
-    ins.setThreshold(weThreshold, nsThreshold)
+    ins.setThreshold(threshold)
 
     for ele in intersections:
         ele.init()
@@ -45,7 +46,7 @@ def simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, int
 
 
 
-def mytest(weThreshold, nsThreshold,
+def mytest(threshold,
            paraList, intersection_name,
            intersectionIndex, sumoMaps):
     totalDistance = 0
@@ -55,7 +56,7 @@ def mytest(weThreshold, nsThreshold,
         distance,duration=0.0,0.0
         while True:
             try:
-                distance, duration = simulationProcess(weThreshold, nsThreshold, paraList, intersection_name, intersectionIndex, map)
+                distance, duration = simulationProcess(threshold, paraList, intersection_name, intersectionIndex, map)
             except Exception , e:
                 print e
                 continue
@@ -63,7 +64,7 @@ def mytest(weThreshold, nsThreshold,
         totalDistance += distance
         totalDuration += duration
     log.log(totalDistance/totalDuration)
-    return totalDistance/totalDuration, weThreshold, nsThreshold
+    return totalDistance/totalDuration, threshold
 
 
 def avgDuration(port):
@@ -113,5 +114,5 @@ def avgSpeed(port):
 
 if __name__ == '__main__':
     config.LogTime = time.time()
-    paraList = [(0,0), (0,0), (0,0), (0,0), (0,0)]
-    print mytest(1, 1, paraList, config.CompareList, 0, config.sumoMaps)
+    paraList = [5,5,5,5,5]
+    print mytest(6, paraList, config.CompareList, 0, config.sumoMaps)

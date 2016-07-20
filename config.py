@@ -44,7 +44,7 @@ def generator_intersectionList(intersection_names, paraList):
     assert len(ret) == len(paraList)
 
     for idx in range(len(ret)):
-        ret[idx].setThreshold(paraList[idx][0], paraList[idx][1])
+        ret[idx].setThreshold(paraList[idx])
     return ret
 
 sumoMaps = [
