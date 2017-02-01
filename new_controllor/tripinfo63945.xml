@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Wed Feb  1 13:19:59 2017 by SUMO Version 0.26.0
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="./sumo/Vanderbilt.net.xml"/>
+        <route-files value="./sumo/night.traffic.xml"/>
+        <additional-files value="./sumo/detectors.xml"/>
+    </input>
+
+    <output>
+        <netstate-dump value="dump63945.xml"/>
+        <tripinfo-output value="tripinfo63945.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="7200"/>
+        <step-length value="0.1"/>
+    </time>
+
+    <processing>
+        <time-to-teleport value="7200"/>
+    </processing>
+
+    <traci_server>
+        <remote-port value="63945"/>
+    </traci_server>
+
+</configuration>
