@@ -422,7 +422,7 @@ def simulationProcess(paraList, sumoMap, ignore = None):
         test.setThreshold(ins_name, ins_threshold, ins_phase)
     #test.debug()
 
-    for s in range(15000):
+    for s in range(10000):
         traci.simulationStep()
         if not s % 10 == 0:
             continue
@@ -488,7 +488,7 @@ def simulationProcess2( sumoMap, ignore = None):
 if __name__ == '__main__':
     #simulationProcess([0,5], '../sumo/Vanderbilt.sumo.cfg')
     ignore = config.ignore_sensors
-    print sys.argv[1], sys.argv[2]
+    print sys.argv[1]
     if len(sys.argv) == 3:
         ignore = ast.literal_eval(sys.argv[2])
     raw_para = sys.argv[1]
